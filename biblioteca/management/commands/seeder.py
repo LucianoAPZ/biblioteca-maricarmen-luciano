@@ -9,7 +9,6 @@ NUM_LLIBRES_PER_IDIOMA = 10
 NUM_USUARIS = 50
 
 class Command(BaseCommand):
-    help = "Seeder para poblar la base de datos con libros, ejemplares y usuarios"
 
     def handle(self, *args, **kwargs):
         fake_catala = Faker('ca_ES')
@@ -24,11 +23,9 @@ class Command(BaseCommand):
             "Français": fake_frances
         }
 
-        # Crear países y lenguas si no existen
         paisos = {idioma: Pais.objects.get_or_create(nom=idioma)[0] for idioma in IDIOMES}
         llengues = {idioma: Llengua.objects.get_or_create(nom=idioma)[0] for idioma in IDIOMES}
 
-        # Crear libros y ejemplares
         for idioma in IDIOMES:
             fake = fake_dict[idioma]
             for _ in range(NUM_LLIBRES_PER_IDIOMA):
@@ -41,7 +38,6 @@ class Command(BaseCommand):
                     pais=paisos[idioma],
                     llengua=llengues[idioma],
                 )
-                # Crear 2 ejemplares por libro
                 for _ in range(2):
                     Exemplar.objects.create(
                         cataleg=llibre,
@@ -49,7 +45,6 @@ class Command(BaseCommand):
                         exclos_prestec=random.choice([True, False]),
                     )
 
-        # Crear usuarios
         for _ in range(NUM_USUARIS):
             Usuari.objects.create_user(
                 username=fake.unique.user_name(),

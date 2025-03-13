@@ -4,23 +4,23 @@ from django.utils.timezone import now
 from faker import Faker
 from biblioteca.models import *
 
-IDIOMES = ["Català", "Español", "English", "Français"]
+IDIOMES = ["Français", "English", "Deutsch", "Italiano"]
 NUM_LLIBRES_PER_IDIOMA = 10
 NUM_USUARIS = 50
 
 class Command(BaseCommand):
 
     def handle(self, *args, **kwargs):
-        fake_catala = Faker('ca_ES')
-        fake_espanol = Faker('es_ES')
-        fake_ingles = Faker('en_US')
         fake_frances = Faker('fr_FR')
+        fake_ingles = Faker('en_US')
+        fake_aleman = Faker('de_DE')
+        fake_italiano = Faker('it_IT')
 
         fake_dict = {
-            "Català": fake_catala,
-            "Español": fake_espanol,
+            "Français": fake_frances,
             "English": fake_ingles,
-            "Français": fake_frances
+            "Deutsch": fake_aleman,
+            "Italiano": fake_italiano
         }
 
         paisos = {idioma: Pais.objects.get_or_create(nom=idioma)[0] for idioma in IDIOMES}
